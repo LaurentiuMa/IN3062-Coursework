@@ -6,7 +6,7 @@ class Cleaner:
     path = ""    
 
     def __init__(self, path):
-        self.path = (path)    
+        self.path = path    
 
     file_path = os.path.join(path,"diamonds.csv")
     diamonds_df = pd.read_csv(file_path)
