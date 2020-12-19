@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Dec 15 16:02:28 2020
-
-@author: Patryk-PC
-"""
-
 import os
 import pandas as pd
 import numpy as np
@@ -38,12 +31,14 @@ diamond_features = ['carat','x','y','z','color','cut','clarity']
 X = df.loc[:, diamond_features].values
 
 #X = df[data].values
-y = df['price'].values
+#y = df['price'].values
 
-print(X[:5])
-print(y[:5])
+#print(X[:5])
+#print(y[:5])
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
+df_price = np.log(df['price'])
+
+X_train, X_test, y_train, y_test = train_test_split(X, df_price, test_size=0.20, random_state=42)
 
 #Linear Regression Model
 lr_model = LinearRegression(fit_intercept = True)
@@ -94,3 +89,22 @@ print('Polynomial Regression degree 4 RMSE:', np.sqrt(metrics.mean_squared_error
 #plt.scatter(X_test, y_test, c='red')
 #plt.scatter(X_test,y_pred2, c='green')
 #plt.show()
+
+carat_test = X_test[:,:1]
+
+
+plt.figure(1)
+plt.scatter(carat_test, y_test, s=1, color='red')
+plt.scatter(carat_test, y_pred, s=1, color='blue')
+
+plt.figure(2)
+plt.scatter(carat_test, y_test, s=1, color='red')
+plt.scatter(carat_test, y_pred2, s=1, color='blue')
+
+plt.figure(3)
+plt.scatter(carat_test, y_test, s=1, color='red')
+plt.scatter(carat_test, y_pred3, s=1, color='blue')
+
+plt.figure(4)
+plt.scatter(carat_test, y_test, s=1, color='red')
+plt.scatter(carat_test, y_pred4, s=1, color='blue')
