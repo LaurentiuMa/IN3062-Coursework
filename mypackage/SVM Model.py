@@ -8,16 +8,21 @@ from sklearn import metrics
 from sklearn.svm import SVC
 from sklearn.svm import SVR
 from sklearn.decomposition import PCA
+from matplotlib import colors
 import time
+from numpy import arange
+from scipy.optimize import curve_fit
+from matplotlib import pyplot
+
 
 start_time = time.time()
 cleaner = Cleaner(r"C:\Users\Laurentiu\OneDrive - City, University of London\IN3062 - Introduction to Artificial Intelligence\Coursework\Code\IN3062-Coursework")
 df = cleaner.getDataFrame()
 
-diamonds_features = ['carat', 'x', 'y', 'z', 'color', 'cut', 'clarity']
+diamonds_features = ['carat', 'x', 'y', 'z', 'color', 'cut', 'clarity', 'depth']
 
 X = df.loc[:, diamonds_features].values
-y = df.iloc[:, 6:7].values
+y = np.log(df.iloc[:, 6:7].values)
 
 # pca = PCA(n_components=2,whiten=True).fit(X)
 # X_pca = pca.transform(X)
@@ -44,8 +49,33 @@ print('Accuracy: ' , percent)
 print("--- %s seconds ---" % (time.time() - start_time))
 
 
-# plt.figure(1)
-# plt.scatter(X_test, y_test, c='red')
-# plt.figure(1)
-# plt.scatter(X_test, y_pred, c='green')
 
+# print(y_pred)
+# print('\n')
+# print(y_pred[0:1])
+
+# colorGroup = ['blue','green','red','cyan','purple','yellow','k','brown']
+# plt.figure(1)
+# for i in range(y_pred.size):
+#     plt.scatter(X_test[:, i], y_pred, color=colorGroup[i % y_pred.size], s=1)   
+
+carat_test = X_test[:,:1]
+
+
+plt.figure(1)
+plt.scatter(carat_test, y_test, s=1, color='red')
+plt.scatter(carat_test, y_pred, s=1, color='blue')
+
+
+#Not sure about these
+fig2, ax2 = plt.subplots()
+ax2.set_title('color')
+ax2.boxplot(X_test[:, 4:5])
+
+fig3, ax3 = plt.subplots()
+ax3.set_title('cut')
+ax3.boxplot(X_test[:, 5:6])
+
+fig4, ax4 = plt.subplots()
+ax4.set_title('quality')
+ax4.boxplot(X_test[:, 6:7])

@@ -22,6 +22,10 @@ diamonds_df = diamonds_df[diamonds_df["y"] < 10]
 # Same for table
 diamonds_df = diamonds_df[diamonds_df["table"] < 85]
 
+print(diamonds_df.groupby('color')['price'].mean().sort_values())
+print(diamonds_df.groupby('clarity')['price'].mean().sort_values())
+print(diamonds_df.groupby('cut')['price'].mean().sort_values())
+
 #Mapping for replacing the non-numerical values
 cut_mapping = {'Ideal':0,
                 'Good':1,
@@ -77,3 +81,36 @@ plt.xticks(range(8))
 plt.xlabel("Clarity")
 plt.ylabel("Count")
 plt.hist(diamonds_df['clarity'].values.tolist(),bins=range(9), align='left', rwidth=0.9)
+
+plt.figure(4)
+plt.xlabel("log Price $")
+plt.ylabel("Count")
+plt.hist(np.log(diamonds_df['price'].values.tolist()), bins = 100)
+
+print ('\n', (diamonds_df['price']).to_numpy().max())
+
+fig, axs = plt.subplots(1,2)
+fig.suptitle('Normalising the diamond prices')
+axs[0].spines["right"].set_visible(False)
+axs[1].spines["right"].set_visible(False)
+axs[0].spines["top"].set_visible(False)
+axs[1].spines["top"].set_visible(False)
+axs[0].set_ylabel("Count")
+axs[0].set_xlabel("Price $")
+axs[0].hist(diamonds_df['price'].values.tolist(), bins = 200)
+axs[1].set_xlabel("log(Price)")
+axs[1].hist(np.log(diamonds_df['price'].values.tolist()), bins = 200)
+
+df_low = diamonds_df['price'] < 2500
+
+
+plt.figure(7)
+plt.xlabel("Depth")
+plt.ylabel("Count")
+plt.xlim(55, 70)
+plt.hist(diamonds_df['depth'].values.tolist(), bins = 200)
+
+plt.figure(8)
+plt.xlabel("Depth")
+plt.ylabel("Count")
+plt.scatter(diamonds_df['depth'].values.tolist(), diamonds_df['price'])
