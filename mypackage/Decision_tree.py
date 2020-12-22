@@ -184,7 +184,7 @@ print('Mean:', np.mean(y_test))
 print('Decision tree RMSE:', np.sqrt(metrics.mean_squared_error(y_test, y_pred_dt)))
 print('Decision tree R2:', r2_score(y_test,y_pred_dt))
 print('Random Forest RMSE:', np.sqrt(metrics.mean_squared_error(y_test, y_pred_rf)))
-print('Decision tree R2:', r2_score(y_test,y_pred_rf))
+print('Random Forest R2:', r2_score(y_test,y_pred_rf))
 
 carat_test = X_test[:,:1]
 
