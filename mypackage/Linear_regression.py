@@ -58,7 +58,7 @@ lr_model3.fit(X_poly_train2, y_train)
 # y_pred4 = lr_model4.predict(X_poly_test3)
 # =============================================================================
 
-#The prediction values for the rest of the models
+# The prediction values for the rest of the models
 y_pred = lr_model.predict(X_test)
 y_pred2 = lr_model2.predict(X_poly_test)
 y_pred3 = lr_model3.predict(X_poly_test2)
@@ -97,31 +97,31 @@ print('Polynomial Regression degree 2 R2:', r2_score(y_test,y_pred2))
 print('Polynomial Regression degree 3 RMSE:', np.sqrt(metrics.mean_squared_error(y_test, y_pred3)))
 print('Polynomial Regression degree 3 R2:', r2_score(y_test,y_pred3))
 # =============================================================================
-# #RMSE and R2 values for polynomial regression degree 4
+# # RMSE and R2 values for polynomial regression degree 4
 # print('Polynomial Regression degree 4 RMSE:', np.sqrt(metrics.mean_squared_error(y_test, y_pred4)))
 # print('Polynomial Regression degree 4 R2:', r2_score(y_test,y_pred4))
 # =============================================================================
 
-#Takes the carat values out of the test dataset to compare to our predicted values.
+# Takes the carat values out of the test dataset to compare to our predicted values.
 carat_test = X_test[:,:1]
 
-#The next 4 graphs plot the predicted and actual price results against the carat value. Reason for carat in report.
-#Red is actual values, blue is predicted values.
-#Plots 2 scatter graphs, one top of one another, results are for linear regression.
+# The next 4 graphs plot the predicted and actual price results against the carat value. Reason for carat in report.
+# Red is actual values, blue is predicted values.
+# Plots 2 scatter graphs, one top of one another, results are for linear regression.
 plt.figure(1)
 plt.scatter(carat_test, y_test, s=1, color='red')
 plt.scatter(carat_test, y_pred, s=1, color='blue')
 plt.xlabel("Carat")
 plt.ylabel("Log(price)")
 
-#Plots 2 scatter graphs on top of one another, results are for polynomial regression degree 2. 
+# Plots 2 scatter graphs on top of one another, results are for polynomial regression degree 2. 
 plt.figure(2)
 plt.scatter(carat_test, y_test, s=1, color='red')
 plt.scatter(carat_test, y_pred2, s=1, color='blue')
 plt.xlabel("Carat")
 plt.ylabel("Log(price)")
 
-#Plots 2 scatter graphs on top of one another, results are for polynomial regression degree 3. 
+# Plots 2 scatter graphs on top of one another, results are for polynomial regression degree 3. 
 plt.figure(3)
 plt.scatter(carat_test, y_test, s=1, color='red')
 plt.scatter(carat_test, y_pred3, s=1, color='blue')
@@ -129,7 +129,7 @@ plt.xlabel("Carat")
 plt.ylabel("Log(price)")
 
 # =============================================================================
-# #Plots the results for polynomial regression degree 4 for the price against carat.
+# # Plots the results for polynomial regression degree 4 for the price against carat.
 # plt.figure(4)
 # plt.scatter(carat_test, y_test, s=1, color='red')
 # plt.scatter(carat_test, y_pred4, s=1, color='blue')
