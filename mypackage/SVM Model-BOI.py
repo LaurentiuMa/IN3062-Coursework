@@ -6,46 +6,42 @@ from mypackage.cleanedData import Cleaner
 from mypackage.Hyperparam import Hyperparam_collection
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
-from sklearn.svm import SVC
 from sklearn.svm import SVR
-from sklearn.decomposition import PCA
-from matplotlib import colors
 import time
-from numpy import arange
 from sklearn.metrics import r2_score
-from scipy.optimize import curve_fit
-from matplotlib import pyplot
 
-# Import the cleaned dataset
+# Use the Cleaner module to import the dataset fom the specified raw string
 cleaner = Cleaner(r"C:\Users\Laurentiu\OneDrive - City, University of London\IN3062 - Introduction to Artificial Intelligence\Coursework\Code\IN3062-Coursework")
 df = cleaner.getDataFrame()
 
-# Split the dataset into the target and the features
+# Here we have the features we would like to include in the model, we set the X and the logY of the price
 diamonds_features = ['carat', 'x', 'y', 'z', 'color', 'cut', 'clarity', 'depth', 'table']
 X = df.loc[:, diamonds_features].values
 y = np.log(df.iloc[:, 6:7].values)
 
-# Select what hyperparameters you want to test and add them to the respective list.
-kernels = ["rbf", "poly", "linear"]
-pca_components = [2,3]
-c_value = [10,40,20]
-gamma_value = [0.01,0.1,1,10]
-epsilon_value = [0.01,0.1,1,10]
+# Set the parameters you would like to run through. If you go ahead with only 1 set, specify them
+# and the program will still run as intended
+kernels = ["rbf"]
+pca_components = [-1]
+c_value = [20]
+gamma_value = [0.1]
+epsilon_value = [0.1]
 
-# Specify the location of the file where you want the results to come out.
+# Set the path where you want the results to be collected (does not work well with cloud drives)
 results_file = r"C:\Users\Laurentiu\SVM_Results(non-PCA).txt"
+# calculate the total number of hyperparameter combinations.
 total_epochs = len(pca_components) * len(c_value) * len(gamma_value) * len(epsilon_value) * len(kernels)
 epoch_number = 0
 hyperparam_list = []
 
-# Add 5 dummy values so everything works as intended when you output the top 5
+# Adds 5 empty collections so that you can output the top 5 results without any unnecessary checks
 for j in range(5):
     hyperparam_list.append(Hyperparam_collection(0,0,0,0,0,0,0,0,0))
 
 print(total_epochs)
 print('\n')
 
-# Iterate through every hyperparameter and run the model respectively (THIS WILL TAKE SOME TIME)
+# Run through the model with every single combination expressed above
 for k in kernels:
     for component in pca_components:
         for c in c_value:
@@ -63,7 +59,8 @@ for k in kernels:
     
                     # Training/testing split
                     X_train, X_test, y_train, y_test = train_test_split(X, y.ravel(), test_size=0.20)
-    
+                    
+                    
                     # Define the regressor and fit the data
                     regressor = SVR(kernel=k, C=c, gamma=g, epsilon=e)
                     regressor.fit(X_train, y_train)
@@ -103,7 +100,7 @@ for k in kernels:
                     percentage_completed = (epoch_number/total_epochs)*100
                     print("epoch {0}/{1}".format(epoch_number, total_epochs))
                     
-                    # Sort the list and output the top 5 most accurate hyperparameters
+                    # Sort the list by R^2 and print the 5 best collections of hyperparameters
                     hyperparam_list.sort(key=lambda ac: ac.rsquared, reverse=True)
                     for i in range(5):
                         h_item = hyperparam_list[i]
@@ -112,9 +109,15 @@ for k in kernels:
                     print("{0}% completed".format(percentage_completed))
                     print('\n')
 
-carat_test = X_test[:,:1]
-
-# Plot a graph to compare the spread of the predicted and true values
-plt.figure(1)
-plt.scatter(carat_test, y_test, s=1, color='red')
-plt.scatter(carat_test, y_pred, s=1, color='blue')
+                    plt.figure(0)
+                    plt.ylabel('log(Price)')
+                    plt.xlabel('carat')
+                    plt.scatter(X_test[:,:1], y_test, c='blue')
+                    plt.scatter(X_test[:,:1], y_pred, c='red')
+                    
+                    plt.figure(1)
+                    plt.ylabel('Price')
+                    plt.xlabel('carat')
+                    plt.scatter(X_test[:,:1], np.exp(y_test), c='blue')
+                    plt.scatter(X_test[:,:1], np.exp(y_pred), c='red')
+                

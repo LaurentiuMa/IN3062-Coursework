@@ -1,4 +1,4 @@
-
+# Container class
 class Hyperparam_collection:
     c = 0
     components = 0

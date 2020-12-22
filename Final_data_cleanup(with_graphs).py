@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# Select your own path to the dataset
 path = r"C:\Users\Laurentiu\OneDrive - City, University of London\IN3062 - Introduction to Artificial Intelligence\Coursework"
 file_path = os.path.join(path,"diamonds.csv")
 diamonds_df = pd.read_csv(file_path)
@@ -22,6 +23,7 @@ diamonds_df = diamonds_df[diamonds_df["y"] < 10]
 # Same for table
 diamonds_df = diamonds_df[diamonds_df["table"] < 85]
 
+# Show the mean for each categorical feature
 print(diamonds_df.groupby('color')['price'].mean().sort_values())
 print(diamonds_df.groupby('clarity')['price'].mean().sort_values())
 print(diamonds_df.groupby('cut')['price'].mean().sort_values())
@@ -49,16 +51,18 @@ clarity_mapping = {'VVS1':0,
                     'VS2':5, 
                     'SI1':6, 
                     'SI2':7}
-
 diamonds_df = diamonds_df.replace({'cut':cut_mapping})
 diamonds_df = diamonds_df.replace({'color':color_mapping})
 diamonds_df = diamonds_df.replace({'clarity':clarity_mapping})
 
+# Plot the correlation matrix
 plt.figure(100)
 print(sns.heatmap(diamonds_df.corr(method="pearson")))
 
+#print the corelation matrix
 print(diamonds_df.corr(method="pearson"))
 
+# Series of plots to understand the data
 plt.figure(0)
 plt.xlabel("Price $")
 plt.ylabel("Count")
@@ -87,8 +91,7 @@ plt.xlabel("log Price $")
 plt.ylabel("Count")
 plt.hist(np.log(diamonds_df['price'].values.tolist()), bins = 100)
 
-print ('\n', (diamonds_df['price']).to_numpy().max())
-
+# Plot the two distributions (log and non-log of price) on the same subplot
 fig, axs = plt.subplots(1,2)
 fig.suptitle('Normalising the diamond prices')
 axs[0].spines["right"].set_visible(False)
@@ -100,17 +103,3 @@ axs[0].set_xlabel("Price $")
 axs[0].hist(diamonds_df['price'].values.tolist(), bins = 200)
 axs[1].set_xlabel("log(Price)")
 axs[1].hist(np.log(diamonds_df['price'].values.tolist()), bins = 200)
-
-df_low = diamonds_df['price'] < 2500
-
-
-plt.figure(7)
-plt.xlabel("Depth")
-plt.ylabel("Count")
-plt.xlim(55, 70)
-plt.hist(diamonds_df['depth'].values.tolist(), bins = 200)
-
-plt.figure(8)
-plt.xlabel("Depth")
-plt.ylabel("Count")
-plt.scatter(diamonds_df['depth'].values.tolist(), diamonds_df['price'])
