@@ -9,6 +9,7 @@ import time
 from tensorflow.keras.models import load_model
 import os
 from mypackage.cleanedData import Cleaner
+import matplotlib.pyplot as plt
 
 # Retrieve cleaned data from lauri's module and create dataframe
 # Make sure to change the working directory if running on another machine
@@ -55,11 +56,9 @@ def nn_hyper_param_training():
                     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
                     
                     nn_model = Sequential()
-                    # Layers section, add and remove layers here
-                    nn_model.add(Dense(nodes, input_shape=X[1].shape, activation='relu')) # First hidden layer with sigmoid activation function
+                    nn_model.add(Dense(nodes, input_shape=X[1].shape, activation='relu'))
                     nn_model.add(Dense(nodes, activation='relu')) 
-                    nn_model.add(Dense(nodes, activation='relu'))                         # Added after seeing high RMSE
-                    # Output layer, has only 1 unit/Node
+                    nn_model.add(Dense(nodes, activation='relu'))
                     nn_model.add(Dense(1))
                     nn_model.summary()
                     
@@ -128,4 +127,35 @@ def nn_hyper_param_training():
     #save_path = "."
     #nn_model.save(os.path.join(save_path,"3_relu_model.h5"))
     
-nn_hyper_param_training()
+#nn_hyper_param_training()
+
+def test_nn(EPOCHS, nodes, lr):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
+                    
+    nn_model = Sequential()
+    nn_model.add(Dense(nodes, input_shape=X[1].shape, activation='relu'))
+    nn_model.add(Dense(nodes, activation='relu')) 
+    nn_model.add(Dense(nodes, activation='relu'))                         
+    nn_model.add(Dense(1))
+    nn_model.summary()
+    
+    custom_adam = tensorflow.keras.optimizers.Adam(learning_rate=lr)
+    
+    nn_model.compile(loss='mean_squared_error', optimizer=custom_adam)
+    nn_model.fit(X_train,y_train,verbose=2, epochs=EPOCHS)
+    nn_model.summary()
+    
+    pred = nn_model.predict(X_test)
+    score = np.sqrt(metrics.mean_squared_error(y_test, pred))
+    r2_score = metrics.r2_score(y_test, pred)
+    
+    print("R2 score: {0}".format(r2_score))
+    print("RMSE: {0}".format(score))
+    print("Mean: {0}".format(np.mean(y_test)))
+
+    plt.scatter(X_test[:, 0], pred, c='#FF0000')
+    plt.scatter(X_test[:, 0], y_test, c='#0000FF')
+    plt.xlabel("carat")
+    plt.ylabel("log(price)")
+
+test_nn(64, 64, 0.001)
