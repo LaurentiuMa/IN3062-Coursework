@@ -4,8 +4,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
 # Select your own path to the dataset
 path = r"C:\Users\Laurentiu\OneDrive - City, University of London\IN3062 - Introduction to Artificial Intelligence\Coursework"
+
 file_path = os.path.join(path,"diamonds.csv")
 diamonds_df = pd.read_csv(file_path)
 
